@@ -120,6 +120,8 @@ export class TwitterSpacesAPIService implements ITwitterSpacesAPIService {
 			twitterSpacesApiResponse.status < 300 &&
 			twitterSpacesApiResponse.body
 		) {
+			// eslint-disable-next-line no-console
+			console.log('right where the api is called: ', twitterSpacesApiResponse.status);
 			await this.cacheSpacesResponse(searchTerm, twitterSpacesApiResponse.body);
 			return {
 				body: JSON.stringify(mapToTwitterSpaces(twitterSpacesApiResponse.body)),

@@ -1,4 +1,4 @@
-import type { ResponseHeaders } from '@sveltejs/kit/types/helper';
+import type { ResponseHeaders } from '@sveltejs/kit/types/';
 
 export interface IResponseEndpointOutput<T> {
 	status?: number;

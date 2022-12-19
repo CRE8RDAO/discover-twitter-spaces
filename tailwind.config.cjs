@@ -17,7 +17,13 @@ const backfaceVisibility = plugin(({ addUtilities }) => {
 
 const config = {
 	mode: 'jit',
-	content: ['./src/**/*.{html,js,svelte,ts}'],
+	content: [
+		'./src/**/*.{html,js,svelte,ts}',
+		require('path').join(
+			require.resolve('@skeletonlabs/skeleton'),
+			'../**/*.{html,js,svelte,ts}',
+		),
+	],
 	darkMode: 'class',
 	theme: {
 		extend: {
@@ -113,7 +119,7 @@ const config = {
 			boxShadow: ['dark'],
 		},
 	},
-	plugins: [typography, backfaceVisibility],
+	plugins: [typography, backfaceVisibility, require('@skeletonlabs/skeleton/tailwind/theme.cjs')],
 };
 
 module.exports = config;

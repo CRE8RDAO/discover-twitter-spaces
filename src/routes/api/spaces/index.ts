@@ -12,7 +12,13 @@ export const get: RequestHandler = async (request) => {
 		const search = request.url.searchParams.get('search');
 
 		const searchQuery = search || 'Web';
-
+		try {
+			const twitterSpacesApiCacheResponse = await twitterSpacesAPIService.getSpacesFromCache(
+				searchQuery,
+			);
+		} catch (error) {
+			logger.error('Unable to retrive from cache dunks', error);
+		}
 		const twitterSpacesApiCacheResponse = await twitterSpacesAPIService.getSpacesFromCache(
 			searchQuery,
 		);
@@ -32,14 +38,24 @@ export const get: RequestHandler = async (request) => {
 				body: JSON.stringify(twitterSpacesApiCacheResponse),
 			};
 		}
+
+		try {
+			await twitterSpacesAPIService.getSpacesFromAPI(searchQuery);
+		} catch (error) {
+			logger.error('Unable to retrive from from api dunks', error);
+		}
 		const response = await twitterSpacesAPIService.getSpacesFromAPI(searchQuery);
+
+		// eslint-disable-next-line no-console
+		// console.log('dunks: ', response);
 		logger.debug(
-			'Uncached response - Total elapsed time: ',
+			'Spaces from API: Uncached response - Total elapsed time: ',
 			(performance.now() - start) / 1000,
 		);
 		await twitterSpacesAPIService.closeConnection();
 		return {
 			...response,
+
 			headers: {
 				'Content-Type': 'application/json',
 			},
