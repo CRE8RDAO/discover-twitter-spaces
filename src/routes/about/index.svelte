@@ -2,7 +2,7 @@
 	// Start: Local Imports
 	// Components
 	import SEO from '$components/seo/SEO.svelte';
-	import { GradientHeading } from '@skeletonlabs/skeleton';
+
 	// Models
 	import type { IMetaTagProperties } from '$models/interfaces/imeta-tag-properties.interface';
 	// End: Local Imports
@@ -35,12 +35,6 @@
 	<h1 class="font-bold text-3xl md:text-5xl tracking-tight mb-4 text-black dark:text-white">
 		About
 	</h1>
-	<GradientHeading
-		tag="h1"
-		direction="bg-gradient-to-r"
-		from="from-primary-500"
-		to="to-accent-500">Skeleton</GradientHeading
-	>
 
 	<div class="mb-8 prose leading-6 text-gray-600 dark:text-gray-400">
 		<p>
