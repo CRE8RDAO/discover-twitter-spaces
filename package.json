@@ -68,7 +68,6 @@
 		"test": "cross-env PW_EXPERIMENTAL_TS_ESM=1 playwright test"
 	},
 	"dependencies": {
-		"@skeletonlabs/skeleton": "^0.80.8",
 		"@upstash/redis": "^1.0.3",
 		"ioredis": "^5.0.1",
 		"isomorphic-fetch": "^3.0.0",
