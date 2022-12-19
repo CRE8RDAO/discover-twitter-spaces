@@ -11,9 +11,12 @@ export const spacesSWR = (url: string) => {
 				response.status &&
 				response.status >= 200 &&
 				response.status < 300 &&
-				response.body
+				response.body &&
+				response.body?.length > 0
 			) {
 				upateSpaces(response.body);
+			} else if (response.status && response.status === 404) {
+				errorState(new Error(`${url} returned empty response`));
 			} else if (response.status && response.status >= 400) {
 				errorState(new Error(`${url} returned status ${response.status}`));
 			}

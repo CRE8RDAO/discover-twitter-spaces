@@ -118,14 +118,22 @@ export class TwitterSpacesAPIService implements ITwitterSpacesAPIService {
 			twitterSpacesApiResponse.status &&
 			twitterSpacesApiResponse.status >= 200 &&
 			twitterSpacesApiResponse.status < 300 &&
-			twitterSpacesApiResponse.body
+			twitterSpacesApiResponse.body &&
+			twitterSpacesApiResponse.body.meta.result_count > 0
 		) {
-			// eslint-disable-next-line no-console
-			console.log('right where the api is called: ', twitterSpacesApiResponse.status);
 			await this.cacheSpacesResponse(searchTerm, twitterSpacesApiResponse.body);
 			return {
 				body: JSON.stringify(mapToTwitterSpaces(twitterSpacesApiResponse.body)),
 				status: twitterSpacesApiResponse.status,
+			};
+		}
+		if (
+			twitterSpacesApiResponse.body &&
+			twitterSpacesApiResponse.body.meta.result_count === 0
+		) {
+			return {
+				body: JSON.stringify([]),
+				status: 404,
 			};
 		}
 

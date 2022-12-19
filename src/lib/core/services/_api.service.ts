@@ -8,8 +8,6 @@ export async function api<T>(
 ): Promise<IResponseEndpointOutput<T>> {
 	const response = request ? await isomorphicFetch(url, request) : await isomorphicFetch(url);
 
-	// eslint-disable-next-line no-console
-	// console.log('inside iresponse-endpoint; ', response);
 	return {
 		status: response.status,
 		body: (await response.json()) as unknown as T,
