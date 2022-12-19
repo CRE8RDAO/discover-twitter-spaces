@@ -150,6 +150,8 @@ export class TwitterSpacesAPIService implements ITwitterSpacesAPIService {
 	 * when the service is destroyed to avoid memory leaks.
 	 */
 	public async closeConnection(): Promise<void | 'OK'> {
-		await this.redisClient.quit();
+		if (this.redisClient.connected) {
+			await this.redisClient.quit();
+		}
 	}
 }
