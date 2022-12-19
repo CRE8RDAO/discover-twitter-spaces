@@ -6,6 +6,7 @@
 	import type { TwitterSpace } from '$models/classes/twitter-space.class';
 
 	export let twitterSpace!: TwitterSpace;
+	console.log(twitterSpace);
 
 	const getStateText = (isLive: boolean, state: string, time = '') =>
 		isLive
@@ -25,7 +26,7 @@
 					<h2
 						class="break-words text-gray-900 dark:text-gray-100 hover:text-indigo-900 dark:hover:text-zinc-400 text-base md:text-lg leading-tight font-medium capitalize pr-4"
 					>
-						{twitterSpace.title}
+						{twitterSpace.title} + AmpliFi Link
 					</h2>
 				</ExternalLink>
 			</div>
@@ -149,9 +150,10 @@
 				cssClasses="bg-indigo-700 hover:bg-indigo-800 text-white active:-indigo-700 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
 				ariaLabel="{`Space url ${twitterSpace.spaceUrl}`}"
 			>
-				Join Space
+				Join Space / Copy Spaces Link
 			</ExternalLink>
 		</div>
+		console.log("twitter space: ", ${twitterSpace});
 		<div class="absolute top-0 right-0">
 			<button
 				type="button"
