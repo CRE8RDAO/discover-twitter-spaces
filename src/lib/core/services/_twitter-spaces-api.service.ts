@@ -18,6 +18,7 @@ import { Logger, LoggerUtils } from '$utils/_logger';
  * @privateRemarks
  * Author - Navneet Sharma
  */
+
 @singleton()
 export class TwitterSpacesAPIService implements ITwitterSpacesAPIService {
 	private readonly DEFAULT_REDIS_CACHE_TTL = 1 * 60 * 60;
@@ -34,6 +35,10 @@ export class TwitterSpacesAPIService implements ITwitterSpacesAPIService {
 	private readonly logger: Logger = LoggerUtils.getInstance('TwitterSpacesAPIService');
 
 	constructor(@inject(RedisClientConfigToken) private readonly redisClient: IRedisClient) {}
+
+	public getStatus(): string {
+		return this.redisClient.status;
+	}
 
 	/**
 	 * This method will return the key for the searched spaces. This key will be used to cache the spaces.
@@ -66,9 +71,19 @@ export class TwitterSpacesAPIService implements ITwitterSpacesAPIService {
 				TwitterSpacesAPIService.getSearchedSpacesKey(searchedTerm),
 				spaces.data.length,
 				this.DEFAULT_REDIS_CACHE_TTL,
+				'redis client deets',
 			);
 		} catch (error) {
-			this.logger.error('Unable to cache', searchedTerm, error);
+			// eslint-disable-next-line no-console
+			console.log('client status', this.redisClient.connected);
+			this.logger.error(
+				'Unable to cache',
+				searchedTerm,
+				error,
+				'redis client deets',
+				this.redisClient.connected,
+				this.redisClient.status,
+			);
 		}
 	}
 
@@ -86,9 +101,20 @@ export class TwitterSpacesAPIService implements ITwitterSpacesAPIService {
 				TwitterSpacesAPIService.getSearchedSpacesKey(searchTerm),
 				JSON.parse,
 			);
+			//
+			this.logger.error('cached dunks ', cached?.data.length);
 			return cached ? mapToTwitterSpaces(cached) : {};
 		} catch (error) {
-			this.logger.error('Unable to retrive from cache', searchTerm, error);
+			// eslint-disable-next-line no-console
+			console.log('client status', this.redisClient.connected);
+			this.logger.error(
+				'Unable to retrive from cache',
+				searchTerm,
+				error,
+				'redis client deets',
+				this.redisClient.connected,
+				this.redisClient.status,
+			);
 		}
 		return {};
 	}
@@ -100,6 +126,7 @@ export class TwitterSpacesAPIService implements ITwitterSpacesAPIService {
 	 * @param spacesSearchQueryParameters - The spaces search query parameters.
 	 * @public
 	 */
+
 	public async getSpacesFromAPI(
 		searchTerm: string,
 		spacesSearchQueryParameters = this.SPACES_SEARCH_PARAMETERS,
@@ -122,6 +149,8 @@ export class TwitterSpacesAPIService implements ITwitterSpacesAPIService {
 
 		// eslint-disable-next-line no-console
 		console.log('ts response: ', twitterSpacesApiResponse);
+		// eslint-disable-next-line no-console
+		console.log('client status', this.redisClient.connected);
 		if (
 			twitterSpacesApiResponse.status &&
 			twitterSpacesApiResponse.status >= 200 &&
@@ -129,16 +158,30 @@ export class TwitterSpacesAPIService implements ITwitterSpacesAPIService {
 			twitterSpacesApiResponse.body &&
 			twitterSpacesApiResponse.body.meta.result_count > 0
 		) {
+			this.logger.info('we got a response that is probably ok');
+			// eslint-disable-next-line no-console
+			console.log(
+				'client status where result = good ie 200 and less than 300',
+				this.redisClient.connected,
+			);
 			await this.cacheSpacesResponse(searchTerm, twitterSpacesApiResponse.body);
+			this.logger.info(
+				'proably cached the response here?',
+				twitterSpacesApiResponse.body.data.length,
+				'body length dunks',
+			);
 			return {
 				body: JSON.stringify(mapToTwitterSpaces(twitterSpacesApiResponse.body)),
 				status: twitterSpacesApiResponse.status,
 			};
+			this.logger.info('body dunks: ', twitterSpacesApiResponse.body, 'length of');
 		}
 		if (
 			twitterSpacesApiResponse.body &&
 			twitterSpacesApiResponse.body.meta.result_count === 0
 		) {
+			// eslint-disable-next-line no-console
+			console.log('client status we got body but result = zero', this.redisClient.connected);
 			return {
 				body: JSON.stringify([]),
 				status: 404,
@@ -158,6 +201,8 @@ export class TwitterSpacesAPIService implements ITwitterSpacesAPIService {
 	 * when the service is destroyed to avoid memory leaks.
 	 */
 	public async closeConnection(): Promise<void | 'OK'> {
+		// eslint-disable-next-line no-console
+		console.log(this.redisClient.connected);
 		if (this.redisClient.connected) {
 			await this.redisClient.quit();
 			this.logger.info('Redis connection closed');

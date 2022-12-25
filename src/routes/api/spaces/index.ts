@@ -4,6 +4,13 @@ import { performance } from 'perf_hooks';
 import { Logger, LoggerUtils } from '$utils/_logger';
 import { twitterSpacesAPIService } from '$core/core';
 
+// import { redisClient, twitterSpacesAPIService } from '$core/core';
+// import { RedisClient } from '$lib/core/config/_redis-client.config';
+
+// allow console.log to be used in this file
+// eslint-disable-next-line no-console
+// console.log('is the redis client connected or what?', connectionDetails);
+
 export const get: RequestHandler = async (request) => {
 	try {
 		const logger: Logger = LoggerUtils.getInstance('SpaceAPIRequestHandler');
