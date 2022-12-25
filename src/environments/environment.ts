@@ -4,10 +4,10 @@ import type { DiscoverEndpointConfig } from '$models/types/discover-endpoits.typ
 import type { IDiscoverEnvironmentConfig } from '$models/interfaces/idiscover-environment.interface';
 
 export const environment: IDiscoverEnvironmentConfig<DiscoverEndpointConfig> = {
-	name: EnvironmentName.DEVELOPMENT,
-	environmentType: EnvironmentType.DEV,
-	production: true,
-	isDebugMode: false,
+	name: EnvironmentName.LOCAL,
+	environmentType: EnvironmentType.LOCAL,
+	production: false,
+	isDebugMode: true,
 	launchURL: `${import.meta.env.DISCOVER_BASE_URL}`,
 	twitterConfig: {
 		TWITTER_PROFILE_URL: `${import.meta.env.DISCOVER_TWITTER_PROFILE_URL}`,

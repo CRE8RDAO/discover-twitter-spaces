@@ -40,7 +40,7 @@
 		"check-env": "node --loader ts-node/esm scripts/js/check-env.ts",
 		"sitemap": "node --loader ts-node/esm scripts/js/sitemap.ts --mode=prod --project=discover --arhitect-type=build --configurations=prod",
 		"dev:sveltekit": "svelte-kit dev",
-		"dev:sveltekit:host": "svelte-kit dev --host=0.0.0.0",
+		"dev:sveltekit:host": "svelte-kit dev  --host=0.0.0.0",
 		"dev": "yarn run check-env && yarn run dev:sveltekit",
 		"dev:host": "yarn run check-env && yarn run dev:sveltekit:host",
 		"dev:open": "yarn run dev --open",
@@ -72,6 +72,7 @@
 		"ioredis": "^5.0.1",
 		"isomorphic-fetch": "^3.0.0",
 		"lz-string": "^1.4.4",
+		"newrelic": "^9.7.4",
 		"tsyringe": "^4.6.0"
 	},
 	"devDependencies": {

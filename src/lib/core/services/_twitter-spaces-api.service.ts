@@ -61,6 +61,12 @@ export class TwitterSpacesAPIService implements ITwitterSpacesAPIService {
 				spaces,
 				this.DEFAULT_REDIS_CACHE_TTL,
 			);
+			this.logger.info(
+				'cache spaces response dunks',
+				TwitterSpacesAPIService.getSearchedSpacesKey(searchedTerm),
+				spaces.data.length,
+				this.DEFAULT_REDIS_CACHE_TTL,
+			);
 		} catch (error) {
 			this.logger.error('Unable to cache', searchedTerm, error);
 		}
@@ -114,6 +120,8 @@ export class TwitterSpacesAPIService implements ITwitterSpacesAPIService {
 
 		const twitterSpacesApiResponse = await api<ISpacesMetaResponse>(url, httpRequestOptions);
 
+		// eslint-disable-next-line no-console
+		console.log('ts response: ', twitterSpacesApiResponse);
 		if (
 			twitterSpacesApiResponse.status &&
 			twitterSpacesApiResponse.status >= 200 &&
@@ -152,6 +160,7 @@ export class TwitterSpacesAPIService implements ITwitterSpacesAPIService {
 	public async closeConnection(): Promise<void | 'OK'> {
 		if (this.redisClient.connected) {
 			await this.redisClient.quit();
+			this.logger.info('Redis connection closed');
 		}
 	}
 }
